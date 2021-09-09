@@ -1,22 +1,38 @@
 <%= form_for(@post) do |f| %>
-  <% if @post.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-      <ul>
-      <% @post.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+          <% if @post.errors.any? %>
+          <div id="error_explanation">
+          <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+          <ul>
+          <% @post.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+            </ul>
+        </div>
+        <% end %>
+        
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %><br>
-  </div>
+     <%= f.label :name %><br>
+      <%= f.text_field :name %><br>
+  
+    <%= f.label :content %><br>
+      <%= f.text_area :content %><br>
+      Tags:
+    <%= f.label "existing tags"%>
+    <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name  do |t|  %>
+    <p>
+        <%= t.label :class =>"whatever"%>
+        <%= t.check_box %>
+    </p>
+  <% end %>
+    <br/>
+    <%= f.fields_for :tags do |tag_builder|%>
+    <%= tag_builder.label "Add New Tag" %>
+    <%= tag_builder.text_field :name %>
+    <% end %>
+    </div>
 
   <div class="actions">
-    <%= f.submit %>
-  </div>
+      <%= f.submit %>
+    </div>
+
 <% end %>
